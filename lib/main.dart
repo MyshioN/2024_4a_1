@@ -14,6 +14,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String Tekst = "Przycisk nie zostal wcisniety";
   bool InProgress = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,11 +44,29 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(Tekst),
+                  if (InProgress)
+                    CircularProgressIndicator() // Wyświetl animację ładowania, jeśli InProgress jest true
+                  else
+                    Text(Tekst),
                   ElevatedButton(
-                    onPressed: _ChangeText,
+                    onPressed: () async {
+                      setState(() {
+                        InProgress = true; // Rozpocznij animację ładowania
+                      });
+
+                      // Wykonaj funkcję opóźnioną o 2 sekundy
+                      await Future.delayed(Duration(seconds: 3), () {
+                        setState(() {
+                          Tekst = "Przycisk zostal nacisniety"; // Zaktualizuj tekst
+                        });
+                      });
+
+                      setState(() {
+                        InProgress = false; // Zakończ animację ładowania
+                      });
+                    },
                     child: Text('Klik'),
                   ),
                 ],
@@ -57,12 +76,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  void _ChangeText() {
-    setState(() {
-      InProgress = true;
-      Tekst = "Przycisko zostal nacisniety";
-    });
   }
 }
