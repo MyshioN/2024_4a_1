@@ -12,16 +12,57 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String Tekst = "Przycisk nie zostal wcisniety";
+  bool InProgress = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Center(
-            child: Text("Waddup cuh")
+          title: const Text('Apka'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add_alert),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
             ),
+            IconButton(
+              icon: const Icon(Icons.accessible_forward_rounded),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+          ],
+        ),
+        body: Builder(
+          builder: (BuildContext context) {
+            return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(Tekst),
+                  ElevatedButton(
+                    onPressed: _ChangeText,
+                    child: Text('Klik'),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
+  }
+
+  void _ChangeText() {
+    setState(() {
+      InProgress = true;
+      Tekst = "Przycisko zostal nacisniety";
+    });
   }
 }
